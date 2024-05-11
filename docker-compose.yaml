@@ -1,0 +1,26 @@
+services:
+  jetstream-web:
+    image: dunglas/frankenphp:1.1.4-php8.2
+    container_name: jetstream-web
+    environment:
+      SERVER_NAME: 'http://'
+      INERTIA_SSR_URL: 'http://inertia:13714'
+    volumes:
+      - .:/app
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+    networks:
+      - laravel
+  inertia:
+    image: oven/bun:1.1.8-distroless
+    container_name: inertia
+    entrypoint: bun /app/bootstrap/ssr/ssr.js
+    volumes:
+      - .:/app
+    networks:
+      - laravel
+
+networks:
+  laravel:
